@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7.2-alpine # Usa una versión específica para evitar cambios inesperados
+    container_name: redis_db
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD} # Protección con contraseña
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data # Persistencia de datos
+    restart: always
+    networks:
+      - redis_net
+
+  redis-commander:
+    image: rediscommander/redis-commander
+    container_name: redis_commander
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "8081:8081"
+    restart: always
+    networks:
+      - redis_net
+
+networks:
+  redis_net:
+    driver: bridge
+
+volumes:
+  redis-data:
