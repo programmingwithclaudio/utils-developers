@@ -1,0 +1,66 @@
+-- Script de inicialización para el esquema de Hive
+-- Guarda este archivo en init/hive-init/init-schema.sql
+
+-- Creación de la base de datos metastore
+CREATE DATABASE IF NOT EXISTS metastore;
+\c metastore;
+
+-- Creación de tablas para el esquema del metastore de Hive
+-- Nota: Este es un script simplificado, el esquema completo se inicializa por Hive
+
+-- Tabla para funciones
+CREATE TABLE IF NOT EXISTS FUNCS (
+    FUNC_ID BIGINT PRIMARY KEY,
+    CLASS_NAME VARCHAR(4000),
+    CREATE_TIME INT,
+    DB_ID BIGINT,
+    FUNC_NAME VARCHAR(128),
+    FUNC_TYPE INT,
+    OWNER_NAME VARCHAR(128),
+    OWNER_TYPE INT
+);
+
+-- Tabla para bases de datos
+CREATE TABLE IF NOT EXISTS DBS (
+    DB_ID BIGINT PRIMARY KEY,
+    DESC VARCHAR(4000),
+    DB_LOCATION_URI VARCHAR(4000) NOT NULL,
+    NAME VARCHAR(128) UNIQUE,
+    OWNER_NAME VARCHAR(128),
+    OWNER_TYPE INT
+);
+
+-- Tabla para tablas
+CREATE TABLE IF NOT EXISTS TBLS (
+    TBL_ID BIGINT PRIMARY KEY,
+    CREATE_TIME INT,
+    DB_ID BIGINT REFERENCES DBS(DB_ID),
+    LAST_ACCESS_TIME INT,
+    OWNER VARCHAR(767),
+    RETENTION INT,
+    SD_ID BIGINT,
+    TBL_NAME VARCHAR(256),
+    TBL_TYPE VARCHAR(128),
+    VIEW_EXPANDED_TEXT TEXT,
+    VIEW_ORIGINAL_TEXT TEXT
+);
+
+-- Tabla para particiones
+CREATE TABLE IF NOT EXISTS PARTITIONS (
+    PART_ID BIGINT PRIMARY KEY,
+    CREATE_TIME INT,
+    LAST_ACCESS_TIME INT,
+    PART_NAME VARCHAR(767),
+    SD_ID BIGINT,
+    TBL_ID BIGINT REFERENCES TBLS(TBL_ID)
+);
+
+-- Índices
+CREATE INDEX IF NOT EXISTS TBLS_N49 ON TBLS(SD_ID);
+CREATE INDEX IF NOT EXISTS TBLS_N50 ON TBLS(DB_ID);
+CREATE INDEX IF NOT EXISTS PARTITIONS_N49 ON PARTITIONS(SD_ID);
+CREATE INDEX IF NOT EXISTS PARTITIONS_N50 ON PARTITIONS(TBL_ID);
+
+-- Concede permisos al usuario hive
+GRANT ALL PRIVILEGES ON DATABASE metastore TO hive;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO hive;

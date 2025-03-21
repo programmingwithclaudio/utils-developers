@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <!-- Configuración de conexión a PostgreSQL mejorada -->
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:postgresql://hive-metastore-postgresql:5432/metastore</value>
+        <description>PostgreSQL JDBC driver connection URL</description>
+    </property>
+    
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>org.postgresql.Driver</value>
+        <description>PostgreSQL JDBC driver class</description>
+    </property>
+    
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>hive</value>
+        <description>Username for metastore database</description>
+    </property>
+    
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>hive</value>
+        <description>Password for metastore database</description>
+    </property>
+    
+    <!-- Optimización del pool de conexiones -->
+    <property>
+        <name>datanucleus.connectionPool.maxPoolSize</name>
+        <value>25</value>
+        <description>Tamaño máximo del pool de conexiones</description>
+    </property>
+    
+    <property>
+        <name>datanucleus.connectionPool.minPoolSize</name>
+        <value>5</value>
+        <description>Tamaño mínimo del pool de conexiones</description>
+    </property>
+    
+    <property>
+        <name>datanucleus.connectionPool.maxActive</name>
+        <value>100</value>
+        <description>Máximo de conexiones activas</description>
+    </property>
+    
+    <!-- Configuración de esquema y directorio de Hive -->
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>hdfs://namenode:9000/user/hive/warehouse</value>
+        <description>Location of default database for the warehouse</description>
+    </property>
+    
+    <property>
+        <name>hive.metastore.uris</name>
+        <value>thrift://hive-metastore:9083</value>
+        <description>URI for client to connect to remote metastore</description>
+    </property>
+    
+    <!-- Configuración de compresión y rendimiento -->
+    <property>
+        <name>hive.exec.compress.output</name>
+        <value>true</value>
+        <description>Compress Hive query output</description>
+    </property>
+    
+    <property>
+        <name>hive.exec.compress.intermediate</name>
+        <value>true</value>
+        <description>Compress intermediate files during Hive query execution</description>
+    </property>
+    
+    <property>
+        <name>hive.default.fileformat</name>
+        <value>ORC</value>
+        <description>Default file format for Hive tables</description>
+    </property>
+    
+    <!-- Optimización para consultas -->
+    <property>
+        <name>hive.optimize.reducededuplication</name>
+        <value>true</value>
+        <description>Reduce duplicated work in queries</description>
+    </property>
+    
+    <property>
+        <name>hive.vectorized.execution.enabled</name>
+        <value>true</value>
+        <description>Enable vectorized mode of execution</description>
+    </property>
+    
+    <property>
+        <name>hive.vectorized.execution.reduce.enabled</name>
+        <value>true</value>
+        <description>Enable vectorized mode of the reduce-side of query execution</description>
+    </property>
+    
+    <property>
+        <name>hive.optimize.skewjoin</name>
+        <value>true</value>
+        <description>Optimize joins with skewed keys</description>
+    </property>
+    
+    <property>
+        <name>hive.exec.parallel</name>
+        <value>true</value>
+        <description>Enable parallel execution of map/reduce tasks</description>
+    </property>
+    
+    <property>
+        <name>hive.exec.parallel.thread.number</name>
+        <value>8</value>
+        <description>Number of threads for parallel execution</description>
+    </property>
+    
+    <!-- Configuración de memoria y recursos -->
+    <property>
+        <name>hive.execution.engine</name>
+        <value>tez</value>
+        <description>Use Tez as execution engine for better performance</description>
+    </property>
+    
+    <property>
+        <name>hive.tez.container.size</name>
+        <value>4096</value>
+        <description>Tez container size in MB</description>
+    </property>
+    
+    <property>
+        <name>hive.tez.java.opts</name>
+        <value>-Xmx3276m -XX:+UseG1GC -XX:+ResizeTLAB</value>
+        <description>JVM options for Tez containers</description>
+    </property>
+    
+    <!-- Configuración del servidor HiveServer2 -->
+    <property>
+        <name>hive.server2.thrift.port</name>
+        <value>10000</value>
+        <description>Port for HiveServer2 Thrift service</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.thrift.bind.host</name>
+        <value>0.0.0.0</value>
+        <description>Bind host for HiveServer2 Thrift server</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.enable.doAs</name>
+        <value>false</value>
+        <description>Disable user impersonation for HiveServer2</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.authentication</name>
+        <value>NONE</value>
+        <description>Authentication method for HiveServer2</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.session.check.interval</name>
+        <value>6h</value>
+        <description>Check session timeout interval</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.idle.session.timeout</name>
+        <value>12h</value>
+        <description>Session timeout</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.logging.operation.enabled</name>
+        <value>true</value>
+        <description>Enable operation logging</description>
+    </property>
+    
+    <!-- Seguridad y verificación de esquema -->
+    <property>
+        <name>hive.metastore.schema.verification</name>
+        <value>false</value>
+        <description>Skip metastore schema version verification</description>
+    </property>
+    
+    <property>
+        <name>hive.metastore.client.connect.retry.delay</name>
+        <value>5s</value>
+        <description>Time between metastore connection retries</description>
+    </property>
+    
+    <property>
+        <name>hive.metastore.client.socket.timeout</name>
+        <value>600s</value>
+        <description>Socket timeout for metastore client</description>
+    </property>
+    
+    <property>
+        <name>hive.server2.max.start.attempts</name>
+        <value>5</value>
+        <description>Maximum number of start attempts for HiveServer2</description>
+    </property>
+    
+    <property>
+        <name>datanucleus.autoCreateSchema</name>
+        <value>false</value>
+        <description>Auto creates the necessary schema in the JDBC datastore</description>
+    </property>
+    
+    <property>
+        <name>datanucleus.fixedDatastore</name>
+        <value>true</value>
+        <description>Whether the datastore is fixed</description>
+    </property>
+    
+    <!-- Estadísticas y ejecución CBO -->
+    <property>
+        <name>hive.stats.fetch.column.stats</name>
+        <value>true</value>
+        <description>Fetch column statistics for query optimization</description>
+    </property>
+    
+    <property>
+        <name>hive.stats.autogather</name>
+        <value>true</value>
+        <description>Auto gather statistics during data insertion</description>
+    </property>
+    
+    <property>
+        <name>hive.cbo.enable</name>
+        <value>true</value>
+        <description>Enable cost-based optimization</description>
+    </property>
+</configuration>
