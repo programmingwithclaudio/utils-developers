@@ -44,7 +44,7 @@ ssh-add yes
 #add ssh a git keygen
 
 eval "$(ssh-agent -s)"
-ssh-add /home/oakdev/yes.pub
+ssh-add /home/oakdev/yes
 git push -u origin main
 
 ``` 
