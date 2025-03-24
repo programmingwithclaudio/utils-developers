@@ -54,4 +54,11 @@ sudo apt update && sudo apt install python3-venv -y
 python3 -m venv venv
 source venv/bin/activate
 
-``` 
+```
+
+- nvm
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+nvm install 20.13.1
+nvm use 20.13.1
+```
