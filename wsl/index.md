@@ -59,6 +59,6 @@ source venv/bin/activate
 - nvm
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-nvm install 20.13.1
-nvm use 20.13.1
+nvm install 22.13.1
+nvm use 22.13.1
 ```
