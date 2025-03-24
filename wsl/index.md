@@ -33,6 +33,25 @@ sudo usermod -aG docker $USER
 # cierra la wsl-ubuntu 
 docker --version
 docker compose version
-# download vscode and install pluggins remote -wsl
-``` 
 
+``` 
+- ssh
+```bash
+# download vscode and install pluggins remote -wsl
+ssh-keygen -t rsa -b 4096 -C "correo@gmail.com"
+eval "$(ssh-agent -s)"
+ssh-add yes
+#add ssh a git keygen
+
+eval "$(ssh-agent -s)"
+ssh-add /home/oakdev/yes.pub
+git push -u origin main
+
+``` 
+- python
+```bash
+sudo apt update && sudo apt install python3-venv -y
+python3 -m venv venv
+source venv/bin/activate
+
+``` 
