@@ -9,8 +9,14 @@ dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux 
 dism.exe /online /enable-feature /featurename:Hyper-V /all /norestart
 # bugs 
 bcdedit /set hypervisorlaunchtype auto
+# **Descarga el instalador del kernel WSL 2 desde el sitio oficial de Microsoft**:  
+   [https://aka.ms/wsl2kernel](https://aka.ms/wsl2kernel)
 
+2. **Ejecuta el instalador** descargado (`wsl_update_x64.msi`) y sigue los pasos. Esto instalará el kernel de Linux necesario para que WSL 2 funcione.
+wsl --list --online
 wsl --install
+wsl --install -d Ubuntu-22.04
+
 ```
 
 ### Instalar Docker dentro de WSL (Ubuntu)
