@@ -60,3 +60,72 @@ sudo apt update && sudo apt install python3-venv -y
 python3 -m venv venv
 source venv/bin/activate
 ```
+---
+Para que `apt` use tu proxy HTTP en el puerto 3128, debes indicarlo explícitamente en su configuración (independientemente de que hayas exportado ya variables de entorno). Te propongo dos métodos:
+
+---
+
+### 1. Definir el proxy en un fichero de configuración de APT
+
+1. Crea (o edita) un archivo llamado, por ejemplo, `/etc/apt/apt.conf.d/01proxy` con permisos de root:
+   ```bash
+   sudo nano /etc/apt/apt.conf.d/01proxy
+   ```
+2. Dentro, añade estas líneas (sustituye `proxy` por el hostname o IP real de tu proxy):
+
+   ```plain
+   Acquire::http::Proxy  "http://proxy:3128/";
+   Acquire::https::Proxy "http://proxy:3128/";
+   Acquire::ftp::Proxy   "http://proxy:3128/";
+   ```
+
+   - Si tu proxy requiere autenticación, el formato es:
+     ```
+     Acquire::http::Proxy "http://usuario:contraseña@proxy:3128/";
+     ```
+3. Guarda y cierra el archivo. A partir de este momento, `sudo apt update` ya usará ese proxy.
+
+---
+
+### 2. Exportar variables de entorno (sesión actual o global)
+
+Puedes exportar las variables en tu shell actual o hacerlas permanentes:
+
+- **Sólo para la sesión actual**:
+  ```bash
+  export http_proxy="http://proxy:3128/"
+  export https_proxy="http://proxy:3128/"
+  ```
+  Luego:
+  ```bash
+  sudo -E apt update
+  ```
+
+- **Para todos los usuarios / sesiones**  
+  Añade las mismas líneas en `/etc/environment` (requiere reiniciar sesión) o en tu `~/.bashrc`:
+  ```bash
+  echo 'http_proxy="http://proxy:3128/"'   | sudo tee -a /etc/environment
+  echo 'https_proxy="http://proxy:3128/"'  | sudo tee -a /etc/environment
+  ```
+
+---
+
+### Verifica la conectividad
+
+1. **Ping al proxy**  
+   ```bash
+   ping -c3 proxy
+   ```
+2. **Telnet al puerto 3128**  
+   ```bash
+   telnet proxy 3128
+   ```
+   Deberías ver cómo acepta conexiones.
+
+Si tras estos cambios sigue sin funcionar, revisa:
+
+- Que el DNS resuelva correctamente `proxy` (prueba con su IP).
+- Que no haya reglas de firewall bloqueando el tráfico saliente.
+- Que tu proxy permita HTTP(s) hacia `archive.ubuntu.com` y `security.ubuntu.com`.
+
+Con esto `apt update && apt upgrade -y` debería completarse sin los errores de “Connection refused”.
